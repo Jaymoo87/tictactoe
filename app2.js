@@ -2,8 +2,9 @@
 // Selects html document based on parameters ('.row > div') //
 let cells = document.querySelectorAll('.row > div');
 let winningMessage = document.getElementsByClassName('winningMessage')[0]
-let finished = false;
+//added click event to WinningMessage
 let restartClick = document.querySelectorAll('h1.winningMessage');
+let finished = false;
 let cellClicks = 0;
 
 
@@ -30,7 +31,7 @@ for (let i = 0; i < cells.length; i++) {
 };
 // added click event to the winningMessage to reset the game
 for (let i = 0; i < restartClick.length; i++) {
-    winningMessage.addEventListener('click', resetGame)
+    winningMessage.addEventListener('click', resetGame);
 };
 
 /// --------Functions--------- ///
@@ -74,14 +75,13 @@ function winCheck() {
             else if (cellClicks > 8 && xCombo == !3 || cellClicks > 8 && oCombo == !3) {
                 finished = true;
                 draw();
-                // resetGame();
             }
         };
     };
 };
 
 
-// checks the results after he cellClicked event. Checks for winner after cellClicks is 3 or higher. resets if there is it is a draw. //
+// checks the results after the cellClicked event. Checks for winner after cellClicks is 3 or higher. resets if there is it is a draw. //
 function cellClicked(e) {
     // anti cheat
     if (e.target.textContent !== '') {
@@ -90,12 +90,13 @@ function cellClicked(e) {
     // add return to stop clicks after a winner is found
     if (finished) {
         return;
-        // resetGame();
+
     }
     if (cellClicks > 2) {
         winCheck();
 
     } else if (cellClicks === 9) {
+
         draw();
     }
     switchPlayer(e)
