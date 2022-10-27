@@ -3,8 +3,8 @@
 let cells = document.querySelectorAll('.row > div');
 let winningMessage = document.getElementsByClassName('winningMessage')[0]
 let finished = false;
-
-let cellClicks = 0
+let restartClick = document.querySelectorAll('h1.winningMessage');
+let cellClicks = 0;
 
 
 
@@ -26,22 +26,27 @@ const winningCombo = [
 
 for (let i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', cellClicked);
-    
-}
 
+};
+// added click event to the winningMessage to reset the game
+for (let i = 0; i < restartClick.length; i++) {
+    winningMessage.addEventListener('click', resetGame)
+};
 
 /// --------Functions--------- ///
 
 // sends 'the its a draw' message and finishes the game. //
 function draw() {
-    winningMessage.innerText = "It's a draw! Click the board to Reset.";
+    winningMessage.innerText = "It's a draw! Click Here to Reset.";
     finished = true;
+    cellClicks++;
+    resetGame()
 }
 
 
 // Checks the status of the cells for a winner. //
 function winCheck() {
-    
+
     // Sets the variables for a X or O win by referencing the winning combo array. //
     for (let i = 0; i < winningCombo.length; i++) {
         // checks the textContent for each cell and and checks for a winner from the winningCombo array. //
@@ -57,28 +62,35 @@ function winCheck() {
             }
             // Defines the winningCombo parameters and the message to display if they are met. //
             if (xCombo === 3) {
-                winningMessage.innerText = "X is the Winner! Click the board to Reset!";
+                winningMessage.innerText = "X is the Winner! Click Here to Reset!";
                 finished = true;
             } else if (oCombo === 3) {
-                winningMessage.innerText = "O is the Winner! Click the board to Reset!";
+                winningMessage.innerText = "O is the Winner! Click Here to Reset!";
                 finished = true;
             }
+
 
             // Sets the parameters to define a draw and calls the draw() function.  //
             else if (cellClicks > 8 && xCombo == !3 || cellClicks > 8 && oCombo == !3) {
                 finished = true;
                 draw();
-            } else if (cellClicks === 10) {
-                resetGame();
-            };
+                // resetGame();
+            }
         };
     };
 };
 
+
 // checks the results after he cellClicked event. Checks for winner after cellClicks is 3 or higher. resets if there is it is a draw. //
 function cellClicked(e) {
+    // anti cheat
+    if (e.target.textContent !== '') {
+        return;
+    }
+    // add return to stop clicks after a winner is found
     if (finished) {
-        resetGame();
+        return;
+        // resetGame();
     }
     if (cellClicks > 2) {
         winCheck();
@@ -89,20 +101,20 @@ function cellClicked(e) {
     switchPlayer(e)
 }
 
- // Changes 'X' and 'O"  player's turn based on cellClicks' even or odd status. Adds +1 to cellClick count for if and else statement.//
-function switchPlayer() {
+// Changes 'X' and 'O"  player's turn based on cellClicks' even or odd status. Adds +1 to cellClick count for if and else statement.//
+function switchPlayer(e) {
     if (cellClicks % 2 == true) {
-        event.target.textContent = playerO;
+        e.target.textContent = playerO;
         winCheck()
-        cellClicks++;
-        console.log(cellClicks);
+
 
     } else {
-        event.target.textContent = playerX;
+        e.target.textContent = playerX;
         winCheck()
-        cellClicks++;
-        console.log(cellClicks);
+
     }
+    cellClicks++;
+    console.log(cellClicks);
 }
 
 
@@ -111,12 +123,12 @@ function resetGame() {
 
     for (let i = 0; i < cells.length; i++) {
         cells[i].textContent = "";
-    
-    
-    cellClicks = 0;
-    winningMessage.innerText = "";
-    finished = false;
-}
+        cellClicks = 0;
+        winningMessage.innerText = "";
+        finished = false;
+    }
+
+
 }
 
 
